@@ -15,13 +15,12 @@ class SerializedNameInspector: AbstractKotlinInspection() {
         return classVisitor { ktClass ->
             if (ktClass.isData()) {
                 //check if serialized name annotation is required.
-                ktClass.getPrimaryConstructorParameterList()?.parameters?.forEach { param ->
-                    if (!param.annotationEntries.any { it.shortName?.asString() == "SerializedName" }) {
-                        holder.registerProblem(
-                            param as PsiElement,
-                            "Missing SerializedName annotation"
-                        )
-                    }
+                val param = ktClass.getMissingAnnotationParam()
+                param?.let {
+                    holder.registerProblem(
+                        it as PsiElement,
+                        "Missing SerializedName annotation"
+                    )
                 }
             }
         }
