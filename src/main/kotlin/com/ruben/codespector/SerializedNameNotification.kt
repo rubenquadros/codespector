@@ -4,20 +4,15 @@ import com.intellij.codeInsight.daemon.impl.analysis.FileHighlightingSetting
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightLevelUtil
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightingLevelManager
 import com.intellij.lang.injection.InjectedLanguageManager
-import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
-import com.intellij.psi.codeStyle.CodeStyleManager
-import com.intellij.psi.codeStyle.JavaCodeStyleManager
 import com.intellij.ui.EditorNotificationPanel
 import com.intellij.ui.EditorNotifications
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
 import org.jetbrains.kotlin.idea.core.util.toPsiFile
-import org.jetbrains.kotlin.idea.util.addAnnotation
-import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 
@@ -46,8 +41,8 @@ class SerializedNameNotification: EditorNotifications.Provider<EditorNotificatio
                 (psiClass as? KtLightClassForSourceDeclaration)?.let { ktLightClassForSourceDeclaration ->
                     val ktClass = ktLightClassForSourceDeclaration.kotlinOrigin as? KtClass
                     if (ktClass?.isData() == true) {
-                        val param = ktClass.getMissingAnnotationParam()
-                        param?.let {
+                        val paramList = ktClass.getMissingAnnotationParams()
+                        if (paramList.isNotEmpty()) {
                             removeNotification(fileEditor)
                             return createPanel(
                                 psiFile = psiFile,
@@ -56,7 +51,9 @@ class SerializedNameNotification: EditorNotifications.Provider<EditorNotificatio
                                 onAddClick = { addAnnotation(ktClass, project) },
                                 onIgnoreClick = { ignoreInspection(fileEditor, psiFile, project) }
                             )
-                        } ?: removeNotification(fileEditor)
+                        } else {
+                            removeNotification(fileEditor)
+                        }
                     }
                 }
 
@@ -65,8 +62,8 @@ class SerializedNameNotification: EditorNotifications.Provider<EditorNotificatio
                     (innerClass as? KtLightClassForSourceDeclaration)?.let { ktLightClassForSourceDeclaration ->
                         val ktClass = ktLightClassForSourceDeclaration.kotlinOrigin as? KtClass
                         if (ktClass?.isData() == true) {
-                            val param = ktClass.getMissingAnnotationParam()
-                            param?.let {
+                            val paramList = ktClass.getMissingAnnotationParams()
+                            if (paramList.isNotEmpty()) {
                                 removeNotification(fileEditor)
                                 return createPanel(
                                     psiFile = psiFile,
@@ -75,7 +72,9 @@ class SerializedNameNotification: EditorNotifications.Provider<EditorNotificatio
                                     onAddClick = { addAnnotation(ktClass, project) },
                                     onIgnoreClick = { ignoreInspection(fileEditor, psiFile, project) }
                                 )
-                            } ?: removeNotification(fileEditor)
+                            } else {
+                                removeNotification(fileEditor)
+                            }
                         }
                     }
                 }
@@ -89,7 +88,7 @@ class SerializedNameNotification: EditorNotifications.Provider<EditorNotificatio
             val panel = EditorNotificationPanel()
             panel.text("Add SerializedName annotation to $name params?")
 
-            panel.createActionLabel("Add annotation") {
+            panel.createActionLabel("Add annotation for data class") {
                 onAddClick.invoke()
             }
 
@@ -104,17 +103,8 @@ class SerializedNameNotification: EditorNotifications.Provider<EditorNotificatio
     }
 
     private fun addAnnotation(ktClass: KtClass, project: Project) {
-        val param = ktClass.getMissingAnnotationParam()
-        param?.let {
-            WriteCommandAction.runWriteCommandAction(project) {
-                param.addAnnotation(
-                    annotationFqName = FqName("com.google.gson.annotations.SerializedName"),
-                    annotationInnerText = "\"${param.name}\""
-                )
-                JavaCodeStyleManager.getInstance(project).shortenClassReferences(param)
-                CodeStyleManager.getInstance(project).reformat(ktClass)
-            }
-        }
+        val paramList = ktClass.getMissingAnnotationParams()
+        paramList.addSerializedNameAnnotations(project = project)
     }
 
     private fun removeNotification(fileEditor: FileEditor) {
