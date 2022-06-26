@@ -1,3 +1,7 @@
+import java.io.FileInputStream
+import java.util.Properties
+
+
 plugins {
     id ("org.jetbrains.intellij") version "1.6.0"
     kotlin("jvm") version "1.6.20"
@@ -26,6 +30,16 @@ tasks {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "11"
+    }
+    test {
+        isScanForTestClasses = false
+        // Only run tests from classes that end with "Test"
+        include("**/*Test.class")
+        systemProperty("idea.force.use.core.classloader", "true")
+        val file = File("local.properties")
+        val prop = Properties()
+        prop.load(FileInputStream(file))
+        systemProperty("idea.home.path", "${prop["home.path"]}")
     }
 }
 
