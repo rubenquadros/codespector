@@ -1,16 +1,19 @@
 <idea-plugin>
     <id>com.ruben.codespector</id>
     <name>Codespector</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="rquadros95@gmail.com" url="https://github.com/rubenquadros/codespector">Ruben Quadros</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    <br>The Codespector plugin helps you detect missing <b>SerializedName</b> annotations in your <b><i>kotlin data classes</i></b> and adds them.
+    This is especially critical in Android applications.</br>
+
+    <br>If you wish to contribute or require support for other languages please feel free to open an issue or discussion <a href="https://github.com/rubenquadros/codespector">here</a></br>
     ]]></description>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">

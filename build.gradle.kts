@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.ruben"
-version = "1.0.0"
+version = "0.2.3"
 
 repositories {
     mavenCentral()
@@ -21,7 +21,7 @@ java {
 
 intellij {
     version.set("2021.3.2")
-    plugins.set(listOf("Kotlin"))
+    plugins.set(listOf("Kotlin", "java"))
 }
 
 tasks {
@@ -41,11 +41,24 @@ tasks {
         prop.load(FileInputStream(file))
         systemProperty("idea.home.path", "${prop["home.path"]}")
     }
+    signPlugin {
+        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
+        privateKey.set(System.getenv("PRIVATE_KEY"))
+        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
+    }
+
+    publishPlugin {
+        token.set(System.getenv("PUBLISH_TOKEN"))
+    }
+
+    patchPluginXml {
+        sinceBuild.set("193.*")
+    }
 }
 
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
     changeNotes.set(
-        """Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+        """<br><b>Initial Release:</b></br>
+        Inspect kotlin data classes for missing <b>SerializedName</b> annotations"""
     )
 }
