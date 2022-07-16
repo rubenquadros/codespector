@@ -24,13 +24,13 @@
                 groupBundle="messages.InspectionsBundle"
                 groupKey="group.names.probable.bugs"
                 enabledByDefault="true"
-                implementationClass="com.ruben.codespector.SerializedNameInspector"
+                implementationClass="com.ruben.codespector.DataClassAnnotationInspector"
                 displayName="Add 'SerializedName' annotation"
                 shortName="SerializedNameInspector"
                 runForWholeFile="true" />
 
         <editorNotificationProvider
-                implementation="com.ruben.codespector.SerializedNameNotification"/>
+                implementation="com.ruben.codespector.DataClassAnnotationNotification"/>
 
         <projectConfigurable
             parentId="editor"

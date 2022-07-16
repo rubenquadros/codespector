@@ -25,23 +25,26 @@ class InspectionComponent(inspectionSettingState: InspectionSettingState) {
                 row {
                     radioButton(
                         text = "Gson",
-                        getter = { getCurrentState() == Parser.GSON },
-                        setter = { }
-                    ).component.addActionListener { setNewState(parser = Parser.GSON) }
+                    ).component.apply {
+                        isSelected = getCurrentState() == Parser.GSON
+                        addActionListener { setNewState(parser = Parser.GSON) }
+                    }
                 }
                 row {
                     radioButton(
                         text = "Moshi",
-                        getter = { getCurrentState() == Parser.MOSHI},
-                        setter = { }
-                    ).component.addActionListener { setNewState(parser = Parser.MOSHI) }
+                    ).component.apply {
+                        isSelected = getCurrentState() == Parser.MOSHI
+                        addActionListener { setNewState(parser = Parser.MOSHI) }
+                    }
                 }
                 row {
                     radioButton(
                         text = "Kotlinx-serialization",
-                        getter = { getCurrentState() == Parser.KOTLINX_SERIALIZATION},
-                        setter = { }
-                    ).component.addActionListener { setNewState(parser = Parser.KOTLINX_SERIALIZATION) }
+                    ).component.apply {
+                        isSelected = getCurrentState() == Parser.KOTLINX_SERIALIZATION
+                        addActionListener { setNewState(parser = Parser.KOTLINX_SERIALIZATION) }
+                    }
                 }
             }
         }
