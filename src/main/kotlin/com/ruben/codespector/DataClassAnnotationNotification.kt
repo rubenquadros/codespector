@@ -22,6 +22,9 @@ import org.jetbrains.kotlin.psi.KtParameter
 
 /**
  * Created by Ruben Quadros on 01/05/22
+ *
+ * Displays the editor notification when annotations are missing for the data class params.
+ * Notification is shown for both outer class and inner classes.
  **/
 class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotificationPanel>() {
 

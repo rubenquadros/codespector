@@ -8,6 +8,8 @@ import javax.swing.JComponent
 
 /**
  * Created by Ruben Quadros on 09/07/22
+ *
+ * Manages the settings UI component.
  **/
 class InspectionSettings(project: Project): Configurable {
 

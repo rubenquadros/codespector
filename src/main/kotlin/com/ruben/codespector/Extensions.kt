@@ -14,6 +14,11 @@ import org.jetbrains.kotlin.renderer.render
 /**
  * Created by Ruben Quadros on 02/05/22
  **/
+
+/**
+ * @return list of [KtParameter]
+ * This method returns all the params of the data class for which the 'Gson SerializedName' annotation is missing.
+ */
 fun KtClass.getMissingSerializedNameAnnotationParams(): List<KtParameter> {
     val paramList = mutableListOf<KtParameter>()
     this.getPrimaryConstructorParameterList()?.parameters?.forEach { param ->
@@ -24,6 +29,10 @@ fun KtClass.getMissingSerializedNameAnnotationParams(): List<KtParameter> {
     return paramList
 }
 
+/**
+ * @return list of [KtParameter]
+ * This method returns all the params of the data class for which the 'Moshi Json' annotation is missing.
+ */
 fun KtClass.getMissingJsonAnnotationParams(): List<KtParameter> {
     val paramList = mutableListOf<KtParameter>()
     this.getPrimaryConstructorParameterList()?.parameters?.forEach { param ->
@@ -34,6 +43,10 @@ fun KtClass.getMissingJsonAnnotationParams(): List<KtParameter> {
     return paramList
 }
 
+/**
+ * @return list of [KtParameter]
+ * This method returns all the params of the data class for which the 'Kotlinx SerialName' annotation is missing.
+ */
 fun KtClass.getMissingSerialNameParams(): List<KtParameter> {
     val paramList = mutableListOf<KtParameter>()
     this.getPrimaryConstructorParameterList()?.parameters?.forEach { param ->
@@ -44,12 +57,20 @@ fun KtClass.getMissingSerialNameParams(): List<KtParameter> {
     return paramList
 }
 
+/**
+ * @param project
+ * This method adds the missing 'Gson SerializedName' annotation to all params of the data class.
+ */
 fun List<KtParameter>.addSerializedNameAnnotations(project: Project) {
     this.forEach { param ->
         param.addSerializedNameAnnotation(project = project)
     }
 }
 
+/**
+ * @param project
+ * This method adds the missing 'Gson SerializedName' annotation to the current param of the data class.
+ */
 fun KtParameter?.addSerializedNameAnnotation(project: Project) {
     this?.let { param ->
         WriteCommandAction.runWriteCommandAction(project) {
@@ -63,12 +84,20 @@ fun KtParameter?.addSerializedNameAnnotation(project: Project) {
     }
 }
 
+/**
+ * @param project
+ * This method adds the missing 'Moshi Json' annotation to all params of the data class.
+ */
 fun List<KtParameter>.addJsonAnnotations(project: Project) {
     this.forEach { param ->
         param.addJsonAnnotation(project = project)
     }
 }
 
+/**
+ * @param project
+ * This method adds the missing 'Moshi Json' annotation to the current param of the data class.
+ */
 fun KtParameter?.addJsonAnnotation(project: Project) {
     this?.let { param ->
         WriteCommandAction.runWriteCommandAction(project) {
@@ -82,12 +111,20 @@ fun KtParameter?.addJsonAnnotation(project: Project) {
     }
 }
 
+/**
+ * @param project
+ * This method adds the missing 'Kotlinx SerialName' annotation to all params of the data class.
+ */
 fun List<KtParameter>.addSerialNameAnnotations(project: Project) {
     this.forEach { param ->
         param.addSerialNameAnnotation(project = project)
     }
 }
 
+/**
+ * @param project
+ * This method adds the missing 'Kotlinx SerialName' annotation to the current param of the data class.
+ */
 fun KtParameter?.addSerialNameAnnotation(project: Project) {
     this?.let { param ->
         WriteCommandAction.runWriteCommandAction(project) {
@@ -101,6 +138,10 @@ fun KtParameter?.addSerialNameAnnotation(project: Project) {
     }
 }
 
+/**
+ * Taken from [org.jetbrains.kotlin.idea.util.addAnnotation]
+ * Modified to include named param for 'Moshi Json' annotation.
+ */
 private fun KtModifierListOwner.addJsonAnnotation(
     annotationFqName: FqName,
     annotationInnerText: String? = null,

@@ -7,6 +7,8 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 
 /**
  * Created by Ruben Quadros on 10/07/22
+ *
+ * Project level settings which is persisted.
  **/
 @State(
     name = "com.ruben.codespector.settings.InspectionSettingState",

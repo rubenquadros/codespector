@@ -15,6 +15,9 @@ import org.jetbrains.kotlin.psi.classVisitor
 
 /**
  * Created by Ruben Quadros on 01/05/22
+ *
+ * Inspects the current data class for the required annotation and highlights the params for which the annotation is missing.
+ * Also provides a quick fix for the highlighted param.
  **/
 class DataClassAnnotationInspector: AbstractKotlinInspection() {
 
@@ -48,6 +51,9 @@ class DataClassAnnotationInspector: AbstractKotlinInspection() {
     }
 }
 
+/**
+ * Adds the required quickfix for the highlighted data class param.
+ */
 class SerializedNameQuickFix(private val parser: Parser): LocalQuickFix {
     override fun getFamilyName(): String = Constants.DATA_CLASS_ANNOTATION_QUICK_FIX
 

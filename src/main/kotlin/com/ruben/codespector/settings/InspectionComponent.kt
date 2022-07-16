@@ -6,6 +6,8 @@ import javax.swing.JPanel
 
 /**
  * Created by Ruben Quadros on 10/07/22
+ *
+ * UI component for the plugin settings.
  **/
 class InspectionComponent(private val inspectionSettingState: InspectionSettingState) {
 
@@ -21,34 +23,32 @@ class InspectionComponent(private val inspectionSettingState: InspectionSettingS
 
     fun getPanel(): JPanel = panel {
 
-        row("Configure plugin settings for your project") {
-            //empty
-        }
-
-        row("Select JSON parser:") {
-            buttonGroup {
-                row {
-                    gsonButton = radioButton(
-                        text = "Gson",
-                    ).component.apply {
-                        isSelected = getCurrentState() == Parser.GSON
-                        addActionListener { setNewState(parser = Parser.GSON) }
+        titledRow("Configure Plugin Settings For Your Project") {
+            row("Select JSON parser:") {
+                buttonGroup {
+                    row {
+                        gsonButton = radioButton(
+                            text = "Gson",
+                        ).component.apply {
+                            isSelected = getCurrentState() == Parser.GSON
+                            addActionListener { setNewState(parser = Parser.GSON) }
+                        }
                     }
-                }
-                row {
-                    moshiButton = radioButton(
-                        text = "Moshi",
-                    ).component.apply {
-                        isSelected = getCurrentState() == Parser.MOSHI
-                        addActionListener { setNewState(parser = Parser.MOSHI) }
+                    row {
+                        moshiButton = radioButton(
+                            text = "Moshi",
+                        ).component.apply {
+                            isSelected = getCurrentState() == Parser.MOSHI
+                            addActionListener { setNewState(parser = Parser.MOSHI) }
+                        }
                     }
-                }
-                row {
-                    kotlinxButton = radioButton(
-                        text = "Kotlinx-serialization",
-                    ).component.apply {
-                        isSelected = getCurrentState() == Parser.KOTLINX_SERIALIZATION
-                        addActionListener { setNewState(parser = Parser.KOTLINX_SERIALIZATION) }
+                    row {
+                        kotlinxButton = radioButton(
+                            text = "Kotlinx-serialization",
+                        ).component.apply {
+                            isSelected = getCurrentState() == Parser.KOTLINX_SERIALIZATION
+                            addActionListener { setNewState(parser = Parser.KOTLINX_SERIALIZATION) }
+                        }
                     }
                 }
             }
