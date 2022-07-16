@@ -12,7 +12,7 @@ class SerializedNameInspectorTest: BasePlatformTestCase() {
 
     private fun setup() {
         myFixture.configureByFile("BeforeSerializedNameAnnotation.kt")
-        myFixture.enableInspections(SerializedNameInspector())
+        myFixture.enableInspections(DataClassAnnotationInspector())
     }
 
     fun testProblemsAreHighlighted() {
@@ -31,7 +31,7 @@ class SerializedNameInspectorTest: BasePlatformTestCase() {
     fun testQuickFixIsFixingTheProblem() {
         setup()
         myFixture.doHighlighting()
-        val action = myFixture.findSingleIntention(Constants.SERIALIZED_NAME_QUICK_FIX)
+        val action = myFixture.findSingleIntention(Constants.DATA_CLASS_ANNOTATION_QUICK_FIX)
         Assert.assertNotNull(action)
         myFixture.launchAction(action)
         myFixture.checkResultByFile("AfterSerializedNameAnnotation.kt")

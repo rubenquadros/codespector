@@ -25,6 +25,6 @@ class InspectionSettingState: PersistentStateComponent<InspectionSettingState> {
     }
 }
 
-enum class Parser {
-    GSON, MOSHI, KOTLINX_SERIALIZATION
+enum class Parser(val annotation: String) {
+    GSON("SerializedName"), MOSHI("Json"), KOTLINX_SERIALIZATION("SerialName")
 }

@@ -25,8 +25,8 @@
                 groupKey="group.names.probable.bugs"
                 enabledByDefault="true"
                 implementationClass="com.ruben.codespector.DataClassAnnotationInspector"
-                displayName="Add 'SerializedName' annotation"
-                shortName="SerializedNameInspector"
+                displayName="Add missing data class annotation"
+                shortName="DataClassInspector"
                 runForWholeFile="true" />
 
         <editorNotificationProvider

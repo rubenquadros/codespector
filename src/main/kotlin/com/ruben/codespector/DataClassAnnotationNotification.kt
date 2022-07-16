@@ -62,6 +62,7 @@ class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotifi
                             return createPanel(
                                 psiFile = psiFile,
                                 project = project,
+                                annotation = parser.annotation,
                                 name = ktClass.name.orEmpty(),
                                 onAddClick = { addAnnotation(paramList = paramList, project = project, parser = parser) },
                                 onIgnoreClick = { ignoreInspection(fileEditor = fileEditor, psiFile = psiFile, project = project) }
@@ -83,6 +84,7 @@ class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotifi
                                 return createPanel(
                                     psiFile = psiFile,
                                     project = project,
+                                    annotation = parser.annotation,
                                     name = ktClass.name.orEmpty(),
                                     onAddClick = { addAnnotation(paramList = paramList, project = project, parser = parser) },
                                     onIgnoreClick = { ignoreInspection(fileEditor = fileEditor, psiFile = psiFile, project = project) }
@@ -98,10 +100,17 @@ class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotifi
         return null
     }
 
-    private fun createPanel(psiFile: PsiFile, project: Project, name: String, onAddClick: () -> Unit, onIgnoreClick: () -> Unit): EditorNotificationPanel? {
+    private fun createPanel(
+        psiFile: PsiFile,
+        project: Project,
+        name: String,
+        annotation: String,
+        onAddClick: () -> Unit,
+        onIgnoreClick: () -> Unit
+    ): EditorNotificationPanel? {
         return if (isErrorHighlighted(psiFile, project)) {
             val panel = EditorNotificationPanel()
-            panel.text("Add SerializedName annotation to $name params?")
+            panel.text("Add $annotation annotation to $name params?")
 
             panel.createActionLabel("Add annotation for data class") {
                 onAddClick.invoke()

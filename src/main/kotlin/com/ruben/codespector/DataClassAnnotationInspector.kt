@@ -39,7 +39,7 @@ class DataClassAnnotationInspector: AbstractKotlinInspection() {
                 paramList.forEach {
                     holder.registerProblem(
                         it as PsiElement,
-                        "Missing SerializedName annotation",
+                        "Missing ${parser.annotation} annotation",
                         SerializedNameQuickFix(parser = parser)
                     )
                 }
@@ -49,7 +49,7 @@ class DataClassAnnotationInspector: AbstractKotlinInspection() {
 }
 
 class SerializedNameQuickFix(private val parser: Parser): LocalQuickFix {
-    override fun getFamilyName(): String = Constants.SERIALIZED_NAME_QUICK_FIX
+    override fun getFamilyName(): String = Constants.DATA_CLASS_ANNOTATION_QUICK_FIX
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
         val param = descriptor.psiElement as? KtParameter
