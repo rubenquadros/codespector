@@ -32,6 +32,7 @@ class InspectionSettings(project: Project): Configurable {
 
     override fun reset() {
         super.reset()
+        component?.resetState()
     }
 
     override fun getDisplayName(): String {
