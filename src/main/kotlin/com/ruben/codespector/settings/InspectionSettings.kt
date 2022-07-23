@@ -4,7 +4,7 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.project.Project
 import com.intellij.ui.EditorNotifications
-import com.ruben.codespector.Constants
+import com.ruben.codespector.MessageBundle
 import javax.swing.JComponent
 
 /**
@@ -41,6 +41,6 @@ class InspectionSettings(project: Project): Configurable {
     }
 
     override fun getDisplayName(): String {
-        return Constants.SETTINGS_NAME
+        return MessageBundle.get("settings.name")
     }
 }

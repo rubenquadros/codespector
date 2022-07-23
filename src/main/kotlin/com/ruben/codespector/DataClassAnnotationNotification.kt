@@ -113,13 +113,13 @@ class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotifi
     ): EditorNotificationPanel? {
         return if (isErrorHighlighted(psiFile, project)) {
             val panel = EditorNotificationPanel()
-            panel.text("Add $annotation annotation to $name params?")
+            panel.text(MessageBundle.get("message.dataclass.annotation.notification", annotation, name))
 
-            panel.createActionLabel("Add annotation for data class") {
+            panel.createActionLabel(MessageBundle.get("message.add.dataclass.annotation")) {
                 onAddClick.invoke()
             }
 
-            panel.createActionLabel("Ignore") {
+            panel.createActionLabel(MessageBundle.get("message.ignore")) {
                 onIgnoreClick.invoke()
             }
 

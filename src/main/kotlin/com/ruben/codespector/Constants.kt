@@ -7,5 +7,4 @@ package com.ruben.codespector
  **/
 object Constants {
     const val DATA_CLASS_ANNOTATION_QUICK_FIX = "Add missing annotation"
-    const val SETTINGS_NAME = "Codespector Settings"
 }

@@ -42,7 +42,7 @@ class DataClassAnnotationInspector: AbstractKotlinInspection() {
                 paramList.forEach {
                     holder.registerProblem(
                         it as PsiElement,
-                        "Missing ${parser.annotation} annotation",
+                        MessageBundle.get("missing.dataclass.annotation", parser.annotation),
                         SerializedNameQuickFix(parser = parser)
                     )
                 }
