@@ -4,10 +4,18 @@
     <vendor email="rquadros95@gmail.com" url="https://github.com/rubenquadros/codespector">Ruben Quadros</vendor>
 
     <description><![CDATA[
-    <br>The Codespector plugin helps you detect missing <b>SerializedName</b> annotations in your <b><i>kotlin data classes</i></b> and adds them.
-    This is especially critical in Android applications.</br>
+    The Codespector plugin helps you detect missing annotations in your <b><i>kotlin data classes</i></b> and adds them.
+    This is especially critical in Android applications.
 
-    <br>If you wish to contribute or require support for other languages please feel free to open an issue or discussion <a href="https://github.com/rubenquadros/codespector">here</a></br>
+    Currently, the following annotations are supported:
+    <br></br>
+    <ul>
+        <li>SerializedName - If you are using Gson</li>
+        <li>Json - If you are using Moshi</li>
+        <li>SerialName - If you are using Kotlinx-Serialization</li>
+    </ul>
+
+    If you wish to contribute or require support for other languages please feel free to open an issue or discussion <a href="https://github.com/rubenquadros/codespector">here</a>.
     ]]></description>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html

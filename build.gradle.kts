@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.ruben"
-version = "0.2.3"
+version = "0.3.0"
 
 repositories {
     mavenCentral()
@@ -58,7 +58,11 @@ tasks {
 
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
     changeNotes.set(
-        """<br><b>Initial Release:</b></br>
-        Inspect kotlin data classes for missing <b>SerializedName</b> annotations"""
+        """<br><b>Initial Release v0.2.3:</b></br>
+        Inspect kotlin data classes for missing <b>SerializedName</b> annotations
+        <br></br>
+        <br><b>v0.3.0: </b></br>
+        Added support for <b>Json (Moshi)</b> and <b>SerialName (Kotlinx-Serialization)</b> annotations.
+        """
     )
 }
