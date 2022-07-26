@@ -27,7 +27,7 @@ class DataClassAnnotationInspector: AbstractKotlinInspection() {
 
         return classVisitor { ktClass ->
             if (ktClass.isData()) {
-                //check if annotation is required.
+                //check if annotation is required
                 val paramList: List<KtParameter> = when (parser) {
                      Parser.GSON -> {
                          ktClass.getMissingSerializedNameAnnotationParams()
