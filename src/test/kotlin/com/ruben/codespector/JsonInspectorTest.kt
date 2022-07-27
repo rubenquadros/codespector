@@ -1,17 +1,21 @@
 package com.ruben.codespector
 
+import com.intellij.openapi.components.service
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.ruben.codespector.settings.InspectionSettingState
+import com.ruben.codespector.settings.Parser
 import org.junit.Assert
 
 /**
- * Created by Ruben Quadros on 08/05/22
+ * Created by Ruben Quadros on 16/07/22
  **/
-class SerializedNameInspectorTest: BasePlatformTestCase() {
+class JsonInspectorTest: BasePlatformTestCase() {
 
     override fun getTestDataPath() = "src/test/testData"
 
     private fun setup() {
-        myFixture.configureByFile("BeforeSerializedNameAnnotation.kt")
+        myFixture.project.service<InspectionSettingState>().parser = Parser.MOSHI
+        myFixture.configureByFile("BeforeJsonAnnotation.kt")
         myFixture.enableInspections(DataClassAnnotationInspector())
     }
 
@@ -34,6 +38,6 @@ class SerializedNameInspectorTest: BasePlatformTestCase() {
         val action = myFixture.findSingleIntention(Constants.DATA_CLASS_ANNOTATION_QUICK_FIX)
         Assert.assertNotNull(action)
         myFixture.launchAction(action)
-        myFixture.checkResultByFile("AfterSerializedNameAnnotation.kt")
+        myFixture.checkResultByFile("AfterJsonAnnotation.kt")
     }
 }
