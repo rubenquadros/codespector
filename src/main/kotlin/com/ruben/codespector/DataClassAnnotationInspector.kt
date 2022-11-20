@@ -28,17 +28,7 @@ class DataClassAnnotationInspector: AbstractKotlinInspection() {
         return classVisitor { ktClass ->
             if (ktClass.isData()) {
                 //check if annotation is required
-                val paramList: List<KtParameter> = when (parser) {
-                     Parser.GSON -> {
-                         ktClass.getMissingSerializedNameAnnotationParams()
-                     }
-                    Parser.MOSHI -> {
-                        ktClass.getMissingJsonAnnotationParams()
-                    }
-                    else -> {
-                        ktClass.getMissingSerialNameParams()
-                    }
-                }
+                val paramList: List<KtParameter> = getMissingAnnotations(parser = parser, ktClass = ktClass)
                 paramList.forEach {
                     holder.registerProblem(
                         it as PsiElement,

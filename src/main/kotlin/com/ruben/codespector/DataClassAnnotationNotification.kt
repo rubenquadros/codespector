@@ -49,17 +49,7 @@ class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotifi
                 (psiClass as? KtLightClassForSourceDeclaration)?.let { ktLightClassForSourceDeclaration ->
                     val ktClass = ktLightClassForSourceDeclaration.kotlinOrigin as? KtClass
                     if (ktClass?.isData() == true) {
-                        val paramList = when (parser) {
-                            Parser.GSON -> {
-                                ktClass.getMissingSerializedNameAnnotationParams()
-                            }
-                            Parser.MOSHI -> {
-                                ktClass.getMissingJsonAnnotationParams()
-                            }
-                            else -> {
-                                ktClass.getMissingSerialNameParams()
-                            }
-                        }
+                        val paramList = getMissingAnnotations(parser = parser, ktClass = ktClass)
                         if (paramList.isNotEmpty()) {
                             removeNotification(fileEditor)
                             return createPanel(
@@ -81,7 +71,7 @@ class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotifi
                     (innerClass as? KtLightClassForSourceDeclaration)?.let { ktLightClassForSourceDeclaration ->
                         val ktClass = ktLightClassForSourceDeclaration.kotlinOrigin as? KtClass
                         if (ktClass?.isData() == true) {
-                            val paramList = ktClass.getMissingSerializedNameAnnotationParams()
+                            val paramList = getMissingAnnotations(parser = parser, ktClass = ktClass)
                             if (paramList.isNotEmpty()) {
                                 removeNotification(fileEditor)
                                 return createPanel(
