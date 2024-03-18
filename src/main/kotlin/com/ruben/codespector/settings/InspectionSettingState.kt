@@ -17,6 +17,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 class InspectionSettingState: PersistentStateComponent<InspectionSettingState> {
 
     var parser: Parser = Parser.GSON
+    var packages: MutableSet<String> = mutableSetOf()
 
     override fun getState(): InspectionSettingState {
         return this

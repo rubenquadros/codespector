@@ -42,13 +42,16 @@ class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotifi
         val psiFile = file.toPsiFile(project)
         val ktFile = psiFile as? KtFile
         val psiClasses = ktFile?.classes
-        val parser = project.service<InspectionSettingState>().parser
+        val settingsState = project.service<InspectionSettingState>()
+        val parser = settingsState.parser
+        val enabledPackages = settingsState.packages
+
         psiClasses?.let { psiClassList ->
             psiClassList.forEach { psiClass ->
                 //check for main classes
                 (psiClass as? KtLightClassForSourceDeclaration)?.let { ktLightClassForSourceDeclaration ->
                     val ktClass = ktLightClassForSourceDeclaration.kotlinOrigin as? KtClass
-                    if (ktClass?.isData() == true) {
+                    if (ktClass?.shouldInspect(enabledPackages) == true) {
                         val paramList = getMissingAnnotations(parser = parser, ktClass = ktClass)
                         if (paramList.isNotEmpty()) {
                             removeNotification(fileEditor)
@@ -70,7 +73,7 @@ class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotifi
                 psiClass.allInnerClasses.forEach { innerClass ->
                     (innerClass as? KtLightClassForSourceDeclaration)?.let { ktLightClassForSourceDeclaration ->
                         val ktClass = ktLightClassForSourceDeclaration.kotlinOrigin as? KtClass
-                        if (ktClass?.isData() == true) {
+                        if (ktClass?.shouldInspect(enabledPackages) == true) {
                             val paramList = getMissingAnnotations(parser = parser, ktClass = ktClass)
                             if (paramList.isNotEmpty()) {
                                 removeNotification(fileEditor)
@@ -145,6 +148,10 @@ class DataClassAnnotationNotification: EditorNotifications.Provider<EditorNotifi
         val isInspectionsHighlightingEnabled = manager.shouldInspect(psiFile)
 
         return isSyntaxHighlightingEnabled && isInspectionsHighlightingEnabled
+    }
+
+    private fun KtClass?.shouldInspect(enabledPackages: Set<String>): Boolean {
+        return this != null && this.isData() && this.isEnabledClass(enabledPackages)
     }
 
 }
