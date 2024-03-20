@@ -1,6 +1,7 @@
 package com.ruben.codespector.settings
 
 import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
@@ -10,6 +11,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
  *
  * Project level settings which is persisted.
  **/
+@Service(Service.Level.PROJECT)
 @State(
     name = "com.ruben.codespector.settings.InspectionSettingState",
     storages = [Storage("Codespector.xml")]

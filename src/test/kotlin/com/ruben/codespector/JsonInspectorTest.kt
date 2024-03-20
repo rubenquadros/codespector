@@ -14,7 +14,10 @@ class JsonInspectorTest: BasePlatformTestCase() {
     override fun getTestDataPath() = "src/test/testData"
 
     private fun setup() {
-        myFixture.project.service<InspectionSettingState>().parser = Parser.MOSHI
+        myFixture.project.service<InspectionSettingState>().apply {
+            parser = Parser.MOSHI
+            packages = mutableSetOf()
+        }
         myFixture.configureByFile("BeforeJsonAnnotation.kt")
         myFixture.enableInspections(DataClassAnnotationInspector())
     }

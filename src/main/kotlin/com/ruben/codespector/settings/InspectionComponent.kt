@@ -1,7 +1,8 @@
 package com.ruben.codespector.settings
 
 import com.intellij.ui.components.JBRadioButton
-import com.intellij.ui.layout.panel
+import com.intellij.ui.dsl.builder.Align
+import com.intellij.ui.dsl.builder.panel
 import com.ruben.codespector.MessageBundle
 import javax.swing.JPanel
 
@@ -41,48 +42,51 @@ class InspectionComponent(private val inspectionSettingState: InspectionSettingS
 
         row {
             label(MessageBundle.get("settings.title"))
+        }
 
-            titledRow(MessageBundle.get("parser.title")) {
-                buttonGroup {
-                    row {
-                        gsonButton = radioButton(
-                            text = MessageBundle.get("parser.gson")
-                        ).component.apply {
-                            isSelected = codespectorSettings.parser == Parser.GSON
-                            addActionListener { setNewParser(parser = Parser.GSON) }
-                        }
+        separator()
+
+        row {
+            this@panel.buttonsGroup(MessageBundle.get("parser.title")) {
+                row {
+                    gsonButton = radioButton(
+                        text = MessageBundle.get("parser.gson")
+                    ).component.apply {
+                        isSelected = codespectorSettings.parser == Parser.GSON
+                        addActionListener { setNewParser(parser = Parser.GSON) }
                     }
-                    row {
-                        moshiButton = radioButton(
-                            text = MessageBundle.get("parser.moshi")
-                        ).component.apply {
-                            isSelected = codespectorSettings.parser == Parser.MOSHI
-                            addActionListener { setNewParser(parser = Parser.MOSHI) }
-                        }
+                }
+                row {
+                    moshiButton = radioButton(
+                        text = MessageBundle.get("parser.moshi")
+                    ).component.apply {
+                        isSelected = codespectorSettings.parser == Parser.MOSHI
+                        addActionListener { setNewParser(parser = Parser.MOSHI) }
                     }
-                    row {
-                        kotlinxButton = radioButton(
-                            text = MessageBundle.get("parser.kotlinx")
-                        ).component.apply {
-                            isSelected = codespectorSettings.parser == Parser.KOTLINX_SERIALIZATION
-                            addActionListener { setNewParser(parser = Parser.KOTLINX_SERIALIZATION) }
-                        }
+                }
+                row {
+                    kotlinxButton = radioButton(
+                        text = MessageBundle.get("parser.kotlinx")
+                    ).component.apply {
+                        isSelected = codespectorSettings.parser == Parser.KOTLINX_SERIALIZATION
+                        addActionListener { setNewParser(parser = Parser.KOTLINX_SERIALIZATION) }
                     }
                 }
             }
+        }
 
-            row {
-                label(MessageBundle.get("inspection.package.title"))
-            }
+        separator()
 
-            row {
-                label(MessageBundle.get("inspection.package.note"))
-            }
+        row {
+            label(MessageBundle.get("inspection.package.title"))
+        }
 
-            row {
-                scrollPane(packageTable.createTable())
-            }
+        row {
+            label(MessageBundle.get("inspection.package.note"))
+        }
 
+        row {
+            resizableRow().scrollCell(packageTable.createTable()).align(Align.FILL)
         }
     }
 
@@ -112,5 +116,3 @@ class InspectionComponent(private val inspectionSettingState: InspectionSettingS
         codespectorSettings = codespectorSettings.copy(packages = packages)
     }
 }
-
-

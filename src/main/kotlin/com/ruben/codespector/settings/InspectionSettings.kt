@@ -31,7 +31,7 @@ class InspectionSettings(project: Project): Configurable {
     override fun isModified(): Boolean {
         val currentState = component?.getCurrentState()
         return inspectionSettingState.parser != currentState?.parser
-                || inspectionSettingState.packages != currentState?.packages
+                || inspectionSettingState.packages != currentState.packages
     }
 
     override fun apply() {

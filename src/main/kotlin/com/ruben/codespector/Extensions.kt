@@ -113,7 +113,8 @@ fun KtParameter?.addJsonAnnotation(project: Project) {
         WriteCommandAction.runWriteCommandAction(project) {
             param.addJsonAnnotation(
                 annotationFqName = FqName("com.squareup.moshi.Json"),
-                annotationInnerText = "\"${param.name}\""
+                annotationInnerText = "\"${param.name}\"",
+                project = project
             )
             JavaCodeStyleManager.getInstance(project).shortenClassReferences(param)
             CodeStyleManager.getInstance(project).reformat(param)
@@ -156,14 +157,15 @@ private fun KtModifierListOwner.addJsonAnnotation(
     annotationFqName: FqName,
     annotationInnerText: String? = null,
     whiteSpaceText: String = "\n",
-    addToExistingAnnotation: ((KtAnnotationEntry) -> Boolean)? = null
+    addToExistingAnnotation: ((KtAnnotationEntry) -> Boolean)? = null,
+    project: Project
 ): Boolean {
     val annotationText = when (annotationInnerText) {
         null -> "@${annotationFqName.render()}"
         else -> "@${annotationFqName.render()}(name = $annotationInnerText)"
     }
 
-    val psiFactory = KtPsiFactory(this)
+    val psiFactory = KtPsiFactory(project)
     val modifierList = modifierList
 
     if (modifierList == null) {
