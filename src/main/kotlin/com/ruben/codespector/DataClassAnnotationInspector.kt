@@ -23,17 +23,19 @@ class DataClassAnnotationInspector: AbstractKotlinInspection() {
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): KtVisitorVoid {
         val project = holder.project
-        val parser = project.service<InspectionSettingState>().parser
+        val settingsState = project.service<InspectionSettingState>()
+        val parser = settingsState.parser
+        val enabledPackages = settingsState.packages
 
         return classVisitor { ktClass ->
-            if (ktClass.isData()) {
+            if (ktClass.isData() && ktClass.isEnabledClass(enabledPackages)) {
                 //check if annotation is required
                 val paramList: List<KtParameter> = getMissingAnnotations(parser = parser, ktClass = ktClass)
                 paramList.forEach {
                     holder.registerProblem(
                         it as PsiElement,
                         MessageBundle.get("missing.dataclass.annotation", parser.annotation),
-                        SerializedNameQuickFix(parser = parser)
+                        QuickFix(parser = parser)
                     )
                 }
             }
@@ -44,7 +46,7 @@ class DataClassAnnotationInspector: AbstractKotlinInspection() {
 /**
  * Adds the required quickfix for the highlighted data class param.
  */
-class SerializedNameQuickFix(private val parser: Parser): LocalQuickFix {
+class QuickFix(private val parser: Parser): LocalQuickFix {
     override fun getFamilyName(): String = Constants.DATA_CLASS_ANNOTATION_QUICK_FIX
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {

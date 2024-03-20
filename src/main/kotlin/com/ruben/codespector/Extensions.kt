@@ -20,6 +20,11 @@ import org.jetbrains.kotlin.renderer.render
  * Created by Ruben Quadros on 02/05/22
  **/
 
+fun KtClass.isEnabledClass(enabledPackages: Set<String>): Boolean {
+    if (enabledPackages.isEmpty()) return true
+    return enabledPackages.any { fqName?.parent().toString().contains(it) } //we use contains to check for inner class
+}
+
 /**
  * @return list of [KtParameter]
  * This method returns all the params of the data class for which the 'Gson SerializedName' annotation is missing.

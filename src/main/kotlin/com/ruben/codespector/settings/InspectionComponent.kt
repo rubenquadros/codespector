@@ -12,63 +12,104 @@ import javax.swing.JPanel
  **/
 class InspectionComponent(private val inspectionSettingState: InspectionSettingState) {
 
-    private var parser: Parser = Parser.GSON
+    private var codespectorSettings = CodespectorSettings(
+        parser = Parser.GSON,
+        packages = emptySet()
+    )
 
     init {
-        parser = inspectionSettingState.state.parser
+        codespectorSettings = codespectorSettings.copy(
+            parser = inspectionSettingState.state.parser,
+            packages = inspectionSettingState.state.packages
+        )
     }
 
-    var gsonButton: JBRadioButton? = null
-    var moshiButton: JBRadioButton? = null
-    var kotlinxButton: JBRadioButton? = null
+    private val packageTable = PackageTable(
+        packages = codespectorSettings.packages,
+        packageTableListener = object : PackageTable.PackageTableListener {
+            override fun onPackagesChanged(packages: Set<String>) {
+                updatePackages(packages)
+            }
+        }
+    )
+
+    private var gsonButton: JBRadioButton? = null
+    private var moshiButton: JBRadioButton? = null
+    private var kotlinxButton: JBRadioButton? = null
 
     fun getPanel(): JPanel = panel {
 
-        titledRow(MessageBundle.get("settings.title")) {
-            row(MessageBundle.get("parser.title")) {
+        row {
+            label(MessageBundle.get("settings.title"))
+
+            titledRow(MessageBundle.get("parser.title")) {
                 buttonGroup {
                     row {
                         gsonButton = radioButton(
                             text = MessageBundle.get("parser.gson")
                         ).component.apply {
-                            isSelected = parser == Parser.GSON
-                            addActionListener { setNewState(parser = Parser.GSON) }
+                            isSelected = codespectorSettings.parser == Parser.GSON
+                            addActionListener { setNewParser(parser = Parser.GSON) }
                         }
                     }
                     row {
                         moshiButton = radioButton(
                             text = MessageBundle.get("parser.moshi")
                         ).component.apply {
-                            isSelected = parser == Parser.MOSHI
-                            addActionListener { setNewState(parser = Parser.MOSHI) }
+                            isSelected = codespectorSettings.parser == Parser.MOSHI
+                            addActionListener { setNewParser(parser = Parser.MOSHI) }
                         }
                     }
                     row {
                         kotlinxButton = radioButton(
                             text = MessageBundle.get("parser.kotlinx")
                         ).component.apply {
-                            isSelected = parser == Parser.KOTLINX_SERIALIZATION
-                            addActionListener { setNewState(parser = Parser.KOTLINX_SERIALIZATION) }
+                            isSelected = codespectorSettings.parser == Parser.KOTLINX_SERIALIZATION
+                            addActionListener { setNewParser(parser = Parser.KOTLINX_SERIALIZATION) }
                         }
                     }
                 }
             }
+
+            row {
+                label(MessageBundle.get("inspection.package.title"))
+            }
+
+            row {
+                label(MessageBundle.get("inspection.package.note"))
+            }
+
+            row {
+                scrollPane(packageTable.createTable())
+            }
+
         }
     }
 
     fun resetState() {
-        this.parser = inspectionSettingState.state.parser
-        gsonButton?.isSelected = parser == Parser.GSON
-        moshiButton?.isSelected = parser == Parser.MOSHI
-        kotlinxButton?.isSelected = parser == Parser.KOTLINX_SERIALIZATION
+        codespectorSettings = codespectorSettings.copy(
+            parser = inspectionSettingState.state.parser,
+            packages = inspectionSettingState.state.packages
+        )
+        gsonButton?.isSelected = codespectorSettings.parser == Parser.GSON
+        moshiButton?.isSelected = codespectorSettings.parser == Parser.MOSHI
+        kotlinxButton?.isSelected = codespectorSettings.parser == Parser.KOTLINX_SERIALIZATION
     }
 
-    fun getCurrentState(): Parser {
-        return this.parser
+    fun getCurrentState(): CodespectorSettings {
+        return this.codespectorSettings
     }
 
-    private fun setNewState(parser: Parser) {
-        this.parser = parser
+    fun disposeResources() {
+        packageTable.disposeResources()
+    }
+
+    private fun setNewParser(parser: Parser) {
+        codespectorSettings = codespectorSettings.copy(parser = parser)
+    }
+
+    private fun updatePackages(packages: Set<String>) {
+        codespectorSettings = codespectorSettings.copy(packages = packages)
     }
 }
 

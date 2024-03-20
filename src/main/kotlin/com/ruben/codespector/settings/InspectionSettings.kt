@@ -29,12 +29,15 @@ class InspectionSettings(project: Project): Configurable {
     }
 
     override fun isModified(): Boolean {
-        return inspectionSettingState.parser != component?.getCurrentState()
+        val currentState = component?.getCurrentState()
+        return inspectionSettingState.parser != currentState?.parser
+                || inspectionSettingState.packages != currentState?.packages
     }
 
     override fun apply() {
         component?.getCurrentState()?.let {
-            inspectionSettingState.parser = it
+            inspectionSettingState.parser = it.parser
+            updatePackages(it.packages)
             restartAnalysis()
             editorNotifications.updateAllNotifications()
         }
@@ -49,9 +52,19 @@ class InspectionSettings(project: Project): Configurable {
         return MessageBundle.get("settings.name")
     }
 
+    override fun disposeUIResources() {
+        super.disposeUIResources()
+        component?.disposeResources()
+    }
+
     private fun restartAnalysis() {
         psiManager.dropPsiCaches()
         psiManager.dropResolveCaches()
         codeAnalyser.restart()
+    }
+
+    private fun updatePackages(packages: Set<String>) {
+        inspectionSettingState.packages.clear()
+        inspectionSettingState.packages.addAll(packages)
     }
 }

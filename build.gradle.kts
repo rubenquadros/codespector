@@ -3,8 +3,8 @@ import java.util.Properties
 
 
 plugins {
-    id ("org.jetbrains.intellij") version "1.6.0"
-    kotlin("jvm") version "1.6.20"
+    id ("org.jetbrains.intellij") version "1.14.2"
+    kotlin("jvm") version "1.8.22"
 }
 
 group = "com.ruben"
