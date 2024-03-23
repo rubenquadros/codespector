@@ -15,6 +15,12 @@
         <li>SerialName - If you are using Kotlinx-Serialization</li>
     </ul>
 
+    <br></br>
+    You can specify the packages which need inspection via the setting.
+    When packages are provided then the plugin inspects <i>data classes</i> in only those packages.
+    When no packages are provided then the plugin continues to inspect all the <i>data classes</i>.
+
+    <br></br>
     If you wish to contribute or require support for other languages please feel free to open an issue or discussion <a href="https://github.com/rubenquadros/codespector">here</a>.
     ]]></description>
 

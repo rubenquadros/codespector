@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.ruben"
-version = "0.3.2"
+version = "0.4.3"
 
 repositories {
     mavenCentral()
@@ -52,20 +52,23 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("213.*")
-    }
-}
-
-tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
-    changeNotes.set(
-        """<br><b>v0.3.2: </b></br>
+        sinceBuild.set("223")
+        untilBuild.set("241.*")
+        changeNotes.set("""
+        <br><b>v0.4.3: </b></br>
+        Now the plugin has a setting using which the users can specify which packages need inspection. 
+        This is specially useful in large projects which have multiple modules.
+        If no packages are provided then the plugin will continue to inspect all the data classes.
+        <br></br>
+        <br><b>v0.3.2: </b></br>
         Fix inner class not detecting required annotation
         <br></br>
         <br><b>v0.3.1: </b></br>
         Added support for <b>Json (Moshi)</b> and <b>SerialName (Kotlinx-Serialization)</b> annotations
         <br></br>
-        <br><b>Initial Release v0.2.3:</b></br>
+        <br><b>Initial Release v0.2.3: </b></br>
         Inspect kotlin data classes for missing <b>SerializedName</b> annotations
         """
-    )
+        )
+    }
 }
