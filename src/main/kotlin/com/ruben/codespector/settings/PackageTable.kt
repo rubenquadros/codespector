@@ -3,9 +3,9 @@ package com.ruben.codespector.settings
 import com.intellij.ui.ToolbarDecorator
 import com.intellij.ui.table.JBTable
 import com.ruben.codespector.MessageBundle
-import java.awt.Component
 import java.beans.PropertyChangeListener
 import javax.swing.DefaultCellEditor
+import javax.swing.JComponent
 import javax.swing.JTextField
 import javax.swing.event.TableModelListener
 import javax.swing.table.AbstractTableModel
@@ -37,7 +37,7 @@ class PackageTable(
 
     private var lastRow = packages.size - 1
 
-    fun createTable(): Component {
+    fun createTable(): JComponent {
         return ToolbarDecorator.createDecorator(table).apply {
             setAddAction {
                 //add a row

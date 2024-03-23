@@ -3,8 +3,8 @@ import java.util.Properties
 
 
 plugins {
-    id ("org.jetbrains.intellij") version "1.14.2"
-    kotlin("jvm") version "1.8.22"
+    id ("org.jetbrains.intellij") version "1.17.0"
+    kotlin("jvm") version "1.9.23"
 }
 
 group = "com.ruben"
@@ -20,7 +20,7 @@ java {
 }
 
 intellij {
-    version.set("2021.3.2")
+    version.set("2023.3.5")
     plugins.set(listOf("Kotlin", "java"))
 }
 
@@ -52,7 +52,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("201.*")
+        sinceBuild.set("213.*")
     }
 }
 

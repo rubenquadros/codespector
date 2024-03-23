@@ -6,9 +6,10 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
+import com.intellij.ui.EditorNotifications
 import com.ruben.codespector.settings.InspectionSettingState
 import com.ruben.codespector.settings.Parser
-import org.jetbrains.kotlin.idea.inspections.AbstractKotlinInspection
+import org.jetbrains.kotlin.idea.codeinsight.api.classic.inspections.AbstractKotlinInspection
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtVisitorVoid
 import org.jetbrains.kotlin.psi.classVisitor
@@ -37,6 +38,9 @@ class DataClassAnnotationInspector: AbstractKotlinInspection() {
                         MessageBundle.get("missing.dataclass.annotation", parser.annotation),
                         QuickFix(parser = parser)
                     )
+
+                    //update the notification
+                    EditorNotifications.getInstance(project).updateAllNotifications()
                 }
             }
         }
@@ -58,6 +62,9 @@ class QuickFix(private val parser: Parser): LocalQuickFix {
                 else -> it.addSerialNameAnnotation(project = project)
             }
         }
+
+        //update the notification
+        EditorNotifications.getInstance(project).updateAllNotifications()
     }
 
 }

@@ -47,8 +47,6 @@
             instance="com.ruben.codespector.settings.InspectionSettings"
             id="com.ruben.codespector.settings.InspectionSettings" />
 
-        <projectService serviceImplementation="com.ruben.codespector.settings.InspectionSettingState" />
-
     </extensions>
 
 </idea-plugin>

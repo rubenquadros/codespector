@@ -14,7 +14,10 @@ class SerialNameInspectorTest: BasePlatformTestCase() {
     override fun getTestDataPath() = "src/test/testData"
 
     private fun setup() {
-        myFixture.project.service<InspectionSettingState>().parser = Parser.KOTLINX_SERIALIZATION
+        myFixture.project.service<InspectionSettingState>().apply {
+            parser = Parser.KOTLINX_SERIALIZATION
+            packages = mutableSetOf()
+        }
         myFixture.configureByFile("BeforeSerialNameAnnotation.kt")
         myFixture.enableInspections(DataClassAnnotationInspector())
     }

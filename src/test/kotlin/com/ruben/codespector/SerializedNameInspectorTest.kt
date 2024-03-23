@@ -1,6 +1,9 @@
 package com.ruben.codespector
 
+import com.intellij.openapi.components.service
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.ruben.codespector.settings.InspectionSettingState
+import com.ruben.codespector.settings.Parser
 import org.junit.Assert
 
 /**
@@ -11,6 +14,10 @@ class SerializedNameInspectorTest: BasePlatformTestCase() {
     override fun getTestDataPath() = "src/test/testData"
 
     private fun setup() {
+        myFixture.project.service<InspectionSettingState>().apply {
+            parser = Parser.GSON
+            packages = mutableSetOf()
+        }
         myFixture.configureByFile("BeforeSerializedNameAnnotation.kt")
         myFixture.enableInspections(DataClassAnnotationInspector())
     }
