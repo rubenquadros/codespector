@@ -7,7 +7,6 @@ import java.beans.PropertyChangeListener
 import javax.swing.DefaultCellEditor
 import javax.swing.JComponent
 import javax.swing.JTextField
-import javax.swing.event.TableModelListener
 import javax.swing.table.AbstractTableModel
 
 class PackageTable(
@@ -81,14 +80,6 @@ class PackageTableModel(
 
     override fun isCellEditable(rowIndex: Int, columnIndex: Int): Boolean {
         return true
-    }
-
-    override fun addTableModelListener(l: TableModelListener?) {
-        super.addTableModelListener(l)
-    }
-
-    override fun removeTableModelListener(l: TableModelListener?) {
-        super.removeTableModelListener(l)
     }
 
     override fun setValueAt(aValue: Any?, rowIndex: Int, columnIndex: Int) {
