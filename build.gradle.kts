@@ -1,3 +1,4 @@
+import org.jetbrains.intellij.tasks.RunIdeTask
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -70,5 +71,11 @@ tasks {
         Inspect kotlin data classes for missing <b>SerializedName</b> annotations
         """
         )
+    }
+}
+
+tasks.named<RunIdeTask>("runIde") {
+    jvmArgumentProviders += CommandLineArgumentProvider {
+        listOf("-Didea.kotlin.plugin.use.k2=true")
     }
 }
