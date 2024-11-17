@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.ruben"
-version = "0.4.4"
+version = "0.4.5"
 
 repositories {
     mavenCentral()
@@ -26,7 +26,11 @@ dependencies {
             providers.gradleProperty("platformType"),
             providers.gradleProperty("platformVersion")
         )
-        bundledPlugin("org.jetbrains.kotlin")
+
+        bundledPlugins(
+            "com.intellij.java",
+            "org.jetbrains.kotlin"
+        )
 
         instrumentationTools()
         pluginVerifier()
@@ -40,15 +44,15 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 intellijPlatform {
     pluginConfiguration {
         changeNotes.set(
             """
-            <br><b>v0.4.4: </b></br>
+            <br><b>v0.4.5: </b></br>
             The plugin is now compatible with K2 compiler.
             <br></br>
             <br><b>v0.4.3: </b></br>
@@ -92,10 +96,10 @@ intellijPlatform {
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "21"
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "21"
     }
     test {
         isScanForTestClasses = false
