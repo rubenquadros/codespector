@@ -4,7 +4,6 @@ import com.intellij.openapi.components.service
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.ruben.codespector.settings.InspectionSettingState
 import com.ruben.codespector.settings.Parser
-import org.junit.Assert
 
 /**
  * Created by Ruben Quadros on 08/05/22
@@ -25,21 +24,21 @@ class SerializedNameInspectorTest: BasePlatformTestCase() {
     fun testProblemsAreHighlighted() {
         setup()
         val highlights = myFixture.doHighlighting()
-        Assert.assertFalse(highlights.isEmpty())
+        assertFalse(highlights.isEmpty())
     }
 
     fun testQuickFixIsProvided() {
         setup()
         myFixture.doHighlighting()
         val quickFix = myFixture.getAllQuickFixes()
-        Assert.assertFalse(quickFix.isEmpty())
+        assertFalse(quickFix.isEmpty())
     }
 
     fun testQuickFixIsFixingTheProblem() {
         setup()
         myFixture.doHighlighting()
         val action = myFixture.findSingleIntention(Constants.DATA_CLASS_ANNOTATION_QUICK_FIX)
-        Assert.assertNotNull(action)
+        assertNotNull(action)
         myFixture.launchAction(action)
         myFixture.checkResultByFile("AfterSerializedNameAnnotation.kt")
     }
